@@ -1,6 +1,5 @@
 package pl.wsb.fitnesstracker.health;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import pl.wsb.fitnesstracker.user.api.User;
 
@@ -8,12 +7,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "health_metrics")
-public class HealthMetric {
+@Table(name = "Health_Metrics") // dokładnie jak w schemacie
+public class HealthMetrics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Nullable
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne(optional = false)
@@ -29,25 +28,24 @@ public class HealthMetric {
     @Column(name = "height", precision = 5, scale = 2)
     private BigDecimal height;
 
-    @Column(name = "heartrate")
-    private Integer heartrate;
+    @Column(name = "heartRate")
+    private Integer heartRate;
 
-    public HealthMetric(
+    protected HealthMetrics() {
+        // dla JPA
+    }
+
+    public HealthMetrics(
             final User user,
             final LocalDate date,
             final BigDecimal weight,
             final BigDecimal height,
-            final Integer heartrate) {
-
+            final Integer heartRate) {
         this.user = user;
         this.date = date;
         this.weight = weight;
         this.height = height;
-        this.heartrate = heartrate;
-    }
-
-    protected HealthMetric() {
-        // dla JPA
+        this.heartRate = heartRate;
     }
 
     // gettery/settery (wygeneruj w IntelliJ)
