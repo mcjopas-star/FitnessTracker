@@ -1,43 +1,46 @@
 package pl.wsb.fitnesstracker.training.api;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import pl.wsb.fitnesstracker.training.internal.ActivityType;
 import pl.wsb.fitnesstracker.user.api.User;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "Trainings")
+@Table(name = "trainings")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Training {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Nullable
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(name = "start_time", nullable = false)
     private Date startTime;
 
+    @Column(name = "end_time", nullable = false)
     private Date endTime;
 
-    // na razie jako String, zgodnie z kolumną activityType w schemacie
-    @Column(name = "activityType", nullable = false, length = 50)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "activity_type", nullable = false)
     private ActivityType activityType;
 
-    @Column(name = "distance", nullable = false)
+    @Column(nullable = false)
     private double distance;
 
-    @Column(name = "averageSpeed")
+    @Column(name = "average_speed", nullable = false)
     private double averageSpeed;
 
     public Training(
