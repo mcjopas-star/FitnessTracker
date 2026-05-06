@@ -44,7 +44,7 @@ Kryterium Akceptacji na ocenę 4:
 - [ ] Poprawnie działające testy jednostkowe związane z encjami (DatabaseSchemaTest) - również na Github Actions
 - [ ] Przesłanie zmian na na swoje repozytorium.
 
-Kryterium Akceptacji na ocenę 3:
+Kryterium Akceptacji na ocenę 3: 
 
 - [ ] Poprawnie zdefiniowana 1 encja JPA (tabele, kolumny, relacje, nullowalność)
 - [ ] Zsynchronizowane repozytorium z repozytorium prowadzącego
