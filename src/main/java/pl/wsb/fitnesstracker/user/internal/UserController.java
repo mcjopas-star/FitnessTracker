@@ -1,32 +1,59 @@
 package pl.wsb.fitnesstracker.user.internal;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pl.wsb.fitnesstracker.user.api.UserDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-/**
- * UserController is responsible for handling HTTP requests related to user operations.
- * It provides endpoints for retrieving and creating users.
- */
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/users")
 @RequiredArgsConstructor
 class UserController {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
-    private final UserMapper userMapper;
-
-    @PostMapping
-    public UserDto addUser(@RequestBody UserDto userDto) throws InterruptedException {
-
-        // TODO: Implement the method to add a new user.
-        //  You can use the @RequestBody annotation to map the request body to the UserDto object.
-
-        return null;
+    @GetMapping
+    List<SimpleUserDto> getAllUsers() {
+        return userService.findAllSimple();
     }
 
+    @GetMapping("/simple")
+    List<SimpleUserDto> getAllSimpleUsers() {
+        return userService.findAllSimple();
+    }
+
+    @GetMapping("/{id}")
+    UserDto getUserById(@PathVariable Long id) {
+        return userService.findById(id);
+    }
+
+    @GetMapping("/email")
+    List<UserEmailDto> getUsersByEmail(@RequestParam String email) {
+        return userService.findByEmail(email);
+    }
+
+    @GetMapping("/older/{time}")
+    List<UserDto> getUsersOlderThan(@PathVariable LocalDate time) {
+        return userService.findOlderThan(time);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    UserDto addUser(@RequestBody UserRequest userRequest) {
+        return userService.create(userRequest);
+    }
+
+    @PutMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    void updateUser(@PathVariable Long userId, @RequestBody UserRequest userRequest) {
+        userService.update(userId, userRequest);
+    }
+
+    @DeleteMapping("/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteUser(@PathVariable Long userId) {
+        userService.delete(userId);
+    }
 }
